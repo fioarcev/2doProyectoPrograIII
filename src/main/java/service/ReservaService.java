@@ -37,6 +37,9 @@ public class ReservaService {
 
     public void registrar(Reserva reserva) {
         validarReservaBase(reserva);
+        if (reservaRepository.buscarPorId(reserva.getId().trim()) != null) {
+            throw new IllegalArgumentException("Ya existe una reserva con ese ID.");
+        }
 
         if (reserva.getDetalles() != null && !reserva.getDetalles().isEmpty()) {
             for (DetalleReserva detalle : reserva.getDetalles()) {
@@ -97,8 +100,9 @@ public class ReservaService {
         if (reserva.getEstado() == null) {
             throw new IllegalArgumentException("El estado de la reserva no puede ser nulo");
         }
-        if (EstadoReserva.ACTIVA.equals(reserva.getEstado()) && reserva.getHoraInicio().isAfter(reserva.getHoraFin())) {
-            throw new IllegalArgumentException("La hora de inicio no puede ser posterior a la hora de fin");
+        if (EstadoReserva.ACTIVA.equals(reserva.getEstado())
+                && !reserva.getHoraInicio().isBefore(reserva.getHoraFin())) {
+            throw new IllegalArgumentException("La hora de inicio debe ser anterior a la hora de fin");
         }
     }
 }

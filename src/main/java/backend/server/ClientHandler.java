@@ -1,6 +1,8 @@
 
 package backend.server;
 
+import service.ReservaService;
+import service.DisponibilidadService;
 import backend.database.UsuarioBDRepository;
 import model.Usuario;
 import shared.network.MensajeUtil;
@@ -36,11 +38,15 @@ import java.nio.charset.StandardCharsets;
 
 public class ClientHandler implements Runnable {
 
+    private static final Object LOCK_RESERVAS = new Object();
     private final Socket cliente;
     private final RecursoBDRepository recursoRepository = new RecursoBDRepository();
     private final Gson gson = new Gson();
     private final ReservaBDRepository reservaRepository =
             new ReservaBDRepository();
+    private final ReservaService reservaService = new ReservaService(
+            new DisponibilidadService(recursoRepository, reservaRepository),
+            reservaRepository);
 
     public ClientHandler(Socket cliente) {
         this.cliente = cliente;
@@ -679,7 +685,9 @@ public class ClientHandler implements Runnable {
         try {
             Reserva reserva = convertirReserva(datos);
 
-            reservaRepository.guardar(reserva);
+            synchronized (LOCK_RESERVAS) {
+                reservaService.registrar(reserva);
+            }
 
             JsonObject datosNotificacion = new JsonObject();
 
@@ -767,7 +775,9 @@ public class ClientHandler implements Runnable {
     private Respuesta actualizarReserva(JsonObject datos) {
         try {
             Reserva reserva = convertirReserva(datos);
-            reservaRepository.actualizar(reserva);
+            synchronized (LOCK_RESERVAS) {
+                reservaService.actualizar(reserva);
+            }
 
             return new Respuesta(
                     true,
@@ -790,7 +800,7 @@ public class ClientHandler implements Runnable {
                 return new Respuesta(false, "No existe esa reserva.", null);
             }
 
-            reservaRepository.eliminar(reserva);
+            reservaService.eliminar(reserva);
 
             return new Respuesta(
                     true,
