@@ -6,6 +6,7 @@ import model.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.FuncionarioService;
+import unit.estadisticas.ReservaRepositoryEnMemoria;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +18,7 @@ class FuncionarioServiceTest {
     @BeforeEach
     void prepararCadaPrueba() {
         usuarios = new UsuarioRepositoryEnMemoria();
-        servicio = new FuncionarioService(new FuncionarioRepositoryEnMemoria(), usuarios);
+        servicio = new FuncionarioService(new FuncionarioRepositoryEnMemoria(), usuarios, new ReservaRepositoryEnMemoria());
     }
 
     @Test

@@ -17,7 +17,7 @@ public class ReservaServiceTest {
     @Test
     void registrarReservaNulaDebeLanzarExcepcion() {
         assertThrows(IllegalArgumentException.class, () -> {
-            ReservaService reservaService = new ReservaService(null);
+            ReservaService reservaService = new ReservaService(null, null);
             reservaService.registrar(null);
         });
     }
@@ -25,7 +25,7 @@ public class ReservaServiceTest {
     @Test
     void actualizarReservaNulaDebeLanzarExcepcion() {
         assertThrows(IllegalArgumentException.class, () -> {
-            ReservaService reservaService = new ReservaService(null);
+            ReservaService reservaService = new ReservaService(null, null);
             reservaService.actualizar(null);
         });
     }
@@ -33,7 +33,7 @@ public class ReservaServiceTest {
     @Test
     void eliminarReservaNulaDebeLanzarExcepcion() {
         assertThrows(IllegalArgumentException.class, () -> {
-            ReservaService reservaService = new ReservaService(null);
+            ReservaService reservaService = new ReservaService(null, null);
             reservaService.eliminar(null);
         });
     }

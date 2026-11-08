@@ -16,11 +16,6 @@ public class FuncionarioService {
     private final repository.ReservaRepository reservaRepository;
 
     public FuncionarioService(FuncionarioRepository funcionarioRepository,
-                              UsuarioRepository usuarioRepository) {
-        this(funcionarioRepository, usuarioRepository, new repository.ReservaXmlRepository());
-    }
-
-    public FuncionarioService(FuncionarioRepository funcionarioRepository,
                               UsuarioRepository usuarioRepository,
                               repository.ReservaRepository reservaRepository) {
         this.funcionarioRepository = funcionarioRepository;

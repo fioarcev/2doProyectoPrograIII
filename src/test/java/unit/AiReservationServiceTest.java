@@ -4,6 +4,8 @@ import exception.AiReservationException;
 import org.junit.jupiter.api.Test;
 import service.AiReservationService;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AiReservationServiceTest {
@@ -11,7 +13,7 @@ public class AiReservationServiceTest {
     void interpretarSolicitudNulaDebeLanzarExcepcion() {
         assertThrows(AiReservationException.class, () -> {
             AiReservationService aiReservationService = new AiReservationService();
-            aiReservationService.interpretarSolicitud(null);
+            aiReservationService.interpretarSolicitud(null, List.of());
         });
     }
 }
