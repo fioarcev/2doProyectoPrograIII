@@ -92,6 +92,9 @@ public class ClientHandler implements Runnable {
                     salida.flush();
                 }
             }
+        } catch (java.net.SocketException e) {
+
+            System.out.println("Cliente desconectado: " + cliente.getInetAddress());
 
         } catch (Exception e) {
 
@@ -100,14 +103,12 @@ public class ClientHandler implements Runnable {
 
         } finally {
 
+            ClientesConectados.desconectar(this);
+
             try {
                 cliente.close();
-                ClientesConectados.desconectar(this);
-
             } catch (IOException e) {
-                System.out.println(
-                        "Error cerrando conexión."
-                );
+                System.out.println("Error cerrando conexión.");
             }
         }
     }
